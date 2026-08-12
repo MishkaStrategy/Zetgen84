@@ -9,6 +9,14 @@
   }, { threshold: 0.14, rootMargin: '0px 0px -6% 0px' });
   document.querySelectorAll('.reveal').forEach((el) => reveal.observe(el));
 
+  const finalPrimary = document.querySelector('.big-cta');
+  const finalSecondary = document.querySelector('.text-cta');
+  if (finalPrimary) finalPrimary.setAttribute('href', '#formats');
+  if (finalSecondary) {
+    finalSecondary.setAttribute('href', '#formats');
+    finalSecondary.textContent = 'Связаться со СПУТНИК →';
+  }
+
   const parallax = document.querySelectorAll('[data-parallax]');
   const casesScroll = document.getElementById('casesScroll');
   const caseTrack = document.getElementById('caseTrack');
