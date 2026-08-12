@@ -1,4 +1,4 @@
-name: Proposal build and visual QA
+name: Proposal build, QA and publish
 
 on:
   push:
@@ -9,13 +9,10 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-
-env:
-  PYTHONDONTWRITEBYTECODE: '1'
+  contents: write
 
 concurrency:
-  group: proposal-qa
+  group: proposal-production
   cancel-in-progress: true
 
 jobs:
@@ -23,16 +20,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Build and validate proposal
+      - name: Build and validate
         run: python proposal/build.py
 
-      - name: Render presentation QA
+      - name: Render visual QA
         shell: bash
         run: |
           mkdir -p _qa
-          python -m http.server 4173 --directory _site >/tmp/proposal-server.log 2>&1 &
+          python -m http.server 4173 --directory _site >/tmp/zetgen84-server.log 2>&1 &
           server_pid=$!
           trap 'kill $server_pid || true' EXIT
           sleep 1
@@ -48,33 +47,50 @@ jobs:
             local size="$2"
             local anchor="$3"
             "$browser" --headless=new --no-sandbox --disable-gpu --hide-scrollbars \
-              --virtual-time-budget=1600 --window-size="$size" \
+              --virtual-time-budget=1700 --window-size="$size" \
               --screenshot="$PWD/_qa/${name}.png" \
               "http://127.0.0.1:4173/?qa=1${anchor}"
             test -s "_qa/${name}.png"
           }
 
-          capture desktop-01-hero       1440,1000 ''
-          capture desktop-02-situation  1440,1000 '#situation'
-          capture desktop-03-system     1440,1000 '#system'
-          capture desktop-04-strategy   1440,1000 '#build'
-          capture desktop-05-roadmap    1440,1000 '#roadmap'
-          capture desktop-06-investment 1440,1000 '#investment'
-          capture desktop-07-impact     1440,1000 '#impact'
-          capture desktop-08-final      1440,1000 '#final'
-          capture mobile-01-hero        390,844 ''
-          capture mobile-02-strategy    390,844 '#build'
-          capture mobile-03-investment  390,844 '#investment'
-          capture mobile-04-final       390,844 '#final'
-
-          file _qa/*.png
+          capture desktop-01-hero     1440,1000 '#hero'
+          capture desktop-02-about    1440,1000 '#about'
+          capture desktop-03-cases    1440,1000 '#cases'
+          capture desktop-04-client   1440,1000 '#client'
+          capture desktop-05-offer    1440,1000 '#offer'
+          capture desktop-06-benefits 1440,1000 '#benefits'
+          capture desktop-07-formats  1440,1000 '#formats'
+          capture desktop-08-final    1440,1000 '#final'
+          capture mobile-01-hero      390,844 '#hero'
+          capture mobile-02-cases     390,844 '#cases'
+          capture mobile-03-offer     390,844 '#offer'
+          capture mobile-04-formats   390,844 '#formats'
+          capture mobile-05-final     390,844 '#final'
 
       - name: Upload QA artifact
         uses: actions/upload-artifact@v4
         with:
-          name: zetgen84-proposal
+          name: zetgen84-production-qa
           path: |
             _site
             _qa
+          retention-days: 2
           if-no-files-found: error
-          retention-days: 1
+
+      - name: Publish clean gh-pages branch
+        shell: bash
+        run: |
+          tmp="$(mktemp -d)"
+          cp -a _site/. "$tmp/"
+          rm -rf _site _qa
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan __pages_publish
+          git rm -rf .
+          git clean -fdx
+          cp -a "$tmp/." .
+          touch .nojekyll
+          git add -A
+          git commit -m "Publish rebuilt Zetgen-84 proposal"
+          git push --force origin HEAD:gh-pages
