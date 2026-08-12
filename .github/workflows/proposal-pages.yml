@@ -1,0 +1,58 @@
+name: Proposal build and deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'proposal/**'
+      - '.github/workflows/proposal-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+concurrency:
+  group: proposal-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build and validate proposal
+        run: python proposal/build.py
+
+      - name: Upload QA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zetgen84-proposal
+          path: _site
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
