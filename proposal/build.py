@@ -53,6 +53,13 @@ def extract() -> None:
             if OUT.resolve() not in target.parents and target != OUT.resolve():
                 raise RuntimeError(f"unsafe archive path: {member.name}")
         tar.extractall(OUT)
+
+    # The visual prototype intentionally ships without invented agency contacts.
+    # Until a real email / Telegram / phone is supplied, CTA returns to cooperation formats.
+    index = OUT / "index.html"
+    html = index.read_text(encoding="utf-8")
+    html = html.replace('mailto:hello@agency-sputnik.ru', '#formats')
+    index.write_text(html, encoding="utf-8")
     (OUT / ".nojekyll").write_text("", encoding="utf-8")
 
 
@@ -83,6 +90,8 @@ def validate() -> None:
 
     if "не гарантия коммерческого результата" not in visible.lower():
         errors.append("business-result disclaimer missing")
+    if "hello@agency-sputnik.ru" in html:
+        errors.append("placeholder agency email leaked into production")
 
     for asset in ("styles.css", "app.js"):
         if not (OUT / asset).exists():
