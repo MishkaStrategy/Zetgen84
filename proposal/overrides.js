@@ -1,6 +1,14 @@
 (() => {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const params = new URLSearchParams(location.search);
+  const qaMode = params.get('qa') === '1';
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches || qaMode;
   const root = document.documentElement;
+
+  if (qaMode) {
+    root.style.scrollBehavior = 'auto';
+    document.body.dataset.qa = 'true';
+  }
+
   document.body.classList.add('js-enhanced');
 
   // Global scroll progress.
@@ -33,13 +41,13 @@
 
   const labels = [
     'Старт','Диагностика','Система','Возможность','Трансформация','Стратегия',
-    'Бренд','Упаковка','Digital','Контент','Creators','Продажи','Roadmap','Инвестиции','KPI','Следующий шаг'
+    'Бренд','Упаковка','Digital','Контент','Creators','Продажи','Roadmap','Инвестиции','KPI','Сценарии','Кейсы','Следующий шаг'
   ];
 
   const chapter = document.createElement('div');
   chapter.className = 'experience-chapter';
   chapter.setAttribute('aria-hidden', 'true');
-  chapter.innerHTML = '<span>01 / 16</span><b>Старт</b>';
+  chapter.innerHTML = '<span>01 / 18</span><b>Старт</b>';
   document.body.appendChild(chapter);
 
   const chapterIndex = (section) => Math.max(0, sections.indexOf(section));
@@ -75,6 +83,22 @@
     if (!ticking) { ticking = true; requestAnimationFrame(updateProgress); }
   }, { passive:true });
   updateProgress();
+
+  // Deterministic hash positioning for runner screenshots only.
+  if (qaMode && location.hash) {
+    const target = document.querySelector(location.hash);
+    if (target) {
+      const place = () => {
+        target.scrollIntoView({ block:'start', behavior:'auto' });
+        updateChapter(target);
+        updateProgress();
+      };
+      place();
+      requestAnimationFrame(place);
+      setTimeout(place, 80);
+      setTimeout(place, 350);
+    }
+  }
 
   // Give the hero core a restrained spatial response without touching layout.
   const orb = document.querySelector('.orb');
