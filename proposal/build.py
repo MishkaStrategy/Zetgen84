@@ -3,11 +3,11 @@ from pathlib import Path
 import re, shutil
 ROOT=Path(__file__).resolve().parent
 OUT=ROOT.parent/'_site'
-FILES=('index.html','v3.css','v3.js')
+FILES=('index.html','v3.css','v3.js','qa.js')
 FORBIDDEN={'БАД':re.compile(r'\bбад(?:ы|ами|ах|ов)?\b',re.I),'лекарство':re.compile(r'\bлекарств\w*',re.I),'лечение':re.compile(r'\bлечени\w*|\bлечит\w*',re.I),'профилактика':re.compile(r'\bпрофилактик\w*',re.I)}
 def validate():
  html=(ROOT/'index.html').read_text(encoding='utf-8'); js=(ROOT/'v3.js').read_text(encoding='utf-8'); css=(ROOT/'v3.css').read_text(encoding='utf-8'); all_text=html+' '+js; errors=[]
- for asset in ('v3.css','v3.js'):
+ for asset in ('v3.css','v3.js','qa.js'):
   if asset not in html: errors.append('missing asset: '+asset)
  for marker in ('Zetgen-84','B2C','Roadmap','Research Sprint','3,5–5,0 млн ₽'):
   if marker.lower() not in all_text.lower(): errors.append('missing narrative marker: '+marker)
