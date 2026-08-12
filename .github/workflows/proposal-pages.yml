@@ -36,10 +36,12 @@ jobs:
           name: zetgen84-proposal
           path: _site
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 1
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
