@@ -1,4 +1,4 @@
-name: Proposal build and deploy
+name: Proposal build and visual QA
 
 on:
   push:
@@ -10,21 +10,17 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 env:
   PYTHONDONTWRITEBYTECODE: '1'
 
 concurrency:
-  group: proposal-pages
+  group: proposal-qa
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      pages-ready: ${{ steps.pages.outcome == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -51,15 +47,13 @@ jobs:
             local name="$1"
             local size="$2"
             local anchor="$3"
-            local target="?qa=1${anchor}"
             "$browser" --headless=new --no-sandbox --disable-gpu --hide-scrollbars \
               --virtual-time-budget=1600 --window-size="$size" \
               --screenshot="$PWD/_qa/${name}.png" \
-              "http://127.0.0.1:4173/${target}"
+              "http://127.0.0.1:4173/?qa=1${anchor}"
             test -s "_qa/${name}.png"
           }
 
-          # Desktop narrative checkpoints.
           capture desktop-01-hero       1440,1000 ''
           capture desktop-02-situation  1440,1000 '#situation'
           capture desktop-03-system     1440,1000 '#system'
@@ -68,8 +62,6 @@ jobs:
           capture desktop-06-investment 1440,1000 '#investment'
           capture desktop-07-impact     1440,1000 '#impact'
           capture desktop-08-final      1440,1000 '#final'
-
-          # Mobile checkpoints where layout changes most.
           capture mobile-01-hero        390,844 ''
           capture mobile-02-strategy    390,844 '#build'
           capture mobile-03-investment  390,844 '#investment'
@@ -86,26 +78,3 @@ jobs:
             _qa
           if-no-files-found: error
           retention-days: 1
-
-      - name: Configure Pages if available
-        id: pages
-        continue-on-error: true
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        if: steps.pages.outcome == 'success'
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: _site
-
-  deploy:
-    if: needs.build.outputs.pages-ready == 'true'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
