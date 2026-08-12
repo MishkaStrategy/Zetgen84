@@ -50,9 +50,10 @@ jobs:
           capture() {
             local name="$1"
             local size="$2"
-            local target="$3"
+            local anchor="$3"
+            local target="?qa=1${anchor}"
             "$browser" --headless=new --no-sandbox --disable-gpu --hide-scrollbars \
-              --virtual-time-budget=1200 --window-size="$size" \
+              --virtual-time-budget=1600 --window-size="$size" \
               --screenshot="$PWD/_qa/${name}.png" \
               "http://127.0.0.1:4173/${target}"
             test -s "_qa/${name}.png"
