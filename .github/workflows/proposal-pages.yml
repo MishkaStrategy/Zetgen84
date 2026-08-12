@@ -23,6 +23,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      pages-ready: ${{ steps.pages.outcome == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -30,25 +32,52 @@ jobs:
       - name: Build and validate proposal
         run: python proposal/build.py
 
+      - name: Render desktop and mobile QA
+        shell: bash
+        run: |
+          mkdir -p _qa
+          python -m http.server 4173 --directory _site >/tmp/proposal-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill $server_pid || true' EXIT
+          sleep 1
+          browser="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$browser" ]; then
+            echo "No Chromium browser found on runner" >&2
+            exit 1
+          fi
+          "$browser" --headless=new --no-sandbox --disable-gpu --hide-scrollbars \
+            --window-size=1440,1000 --screenshot="$PWD/_qa/proposal-desktop.png" \
+            http://127.0.0.1:4173/
+          "$browser" --headless=new --no-sandbox --disable-gpu --hide-scrollbars \
+            --window-size=390,844 --screenshot="$PWD/_qa/proposal-mobile.png" \
+            http://127.0.0.1:4173/
+          test -s _qa/proposal-desktop.png
+          test -s _qa/proposal-mobile.png
+          file _qa/*.png
+
       - name: Upload QA artifact
         uses: actions/upload-artifact@v4
         with:
           name: zetgen84-proposal
-          path: _site
+          path: |
+            _site
+            _qa
           if-no-files-found: error
           retention-days: 1
 
-      - name: Configure Pages
+      - name: Configure Pages if available
+        id: pages
+        continue-on-error: true
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload Pages artifact
+        if: steps.pages.outcome == 'success'
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
 
   deploy:
+    if: needs.build.outputs.pages-ready == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
