@@ -15,7 +15,9 @@
   <script>
   (async () => {
     const base = 'https://raw.githubusercontent.com/MishkaStrategy/Zetgen84/proposal-v2/proposal-v2/';
-    const rev = '?v=d1af968a';
+    const rev = '?v=4ec5c8e2';
+    const sharpProduct = 'https://izkoltsovo.ru/upload/resize_cache/iblock/c0e/800_800_1/mcj3xbt533e9026s7whithdw8y1g03l2.png';
+    const fallbackProduct = '../assets/zetgen-product.jpg';
     const request = (file) => fetch(base + file + rev, { cache: 'no-store' });
     try {
       const [htmlRes, cssRes, auditRes, jsRes] = await Promise.all([
@@ -28,7 +30,11 @@
       let [html, css, audit, js] = await Promise.all([
         htmlRes.text(), cssRes.text(), auditRes.text(), jsRes.text()
       ]);
+
+      /* One real product image per scene. Swap only the img source; never stack layers. */
       html = html
+        .replace(/<img([^>]*?)src="\.\.\/assets\/zetgen-product\.jpg"/g, `<img$1src="${sharpProduct}" onerror="this.onerror=null;this.src='${fallbackProduct}'"`)
+        .replace(/href="\.\.\/assets\/zetgen-product\.jpg"/g, `href="${sharpProduct}"`)
         .replace(/<link\s+rel="stylesheet"\s+href="\.\/styles\.css"\s*>/i, '')
         .replace(/<script\s+src="\.\/app\.js"\s+defer><\/script>/i, '')
         .replace('</head>', `<style>${css}\n${audit}</style></head>`)
