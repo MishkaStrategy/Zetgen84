@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f0f1e8">
+  <title>Зетген-84 × СПУТНИК — версия 2</title>
+  <style>
+    html,body{margin:0;min-height:100%;background:#f0f1e8;color:#10251b;font-family:Arial,Helvetica,sans-serif}
+    .loader{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}.loader b{font-size:clamp(34px,7vw,92px);letter-spacing:-.06em}.loader span{display:block;margin-top:14px;font-size:12px;opacity:.55;text-transform:uppercase;letter-spacing:.12em}
+  </style>
+</head>
+<body>
+  <div class="loader"><div><b>Зетген-84 × СПУТНИК</b><span>Загружаем коммерческое предложение</span></div></div>
+  <script>
+  (async () => {
+    const base = 'https://raw.githubusercontent.com/MishkaStrategy/Zetgen84/proposal-v2/proposal-v2/';
+    try {
+      const [htmlRes, cssRes, auditRes, jsRes] = await Promise.all([
+        fetch(base + 'index.html'),
+        fetch(base + 'styles.css'),
+        fetch(base + 'audit.css'),
+        fetch(base + 'app.js')
+      ]);
+      if (![htmlRes, cssRes, auditRes, jsRes].every(r => r.ok)) throw new Error('resource fetch failed');
+      let [html, css, audit, js] = await Promise.all([
+        htmlRes.text(), cssRes.text(), auditRes.text(), jsRes.text()
+      ]);
+      html = html
+        .replace(/<link\s+rel="stylesheet"\s+href="\.\/styles\.css"\s*>/i, '')
+        .replace(/<script\s+src="\.\/app\.js"\s+defer><\/script>/i, '')
+        .replace('</head>', `<style>${css}\n${audit}</style></head>`)
+        .replace('</body>', `<script>${js.replace(/<\/script/gi, '<\\/script')}<\/script></body>`);
+      document.open();
+      document.write(html);
+      document.close();
+    } catch (error) {
+      document.body.innerHTML = '<div class="loader"><div><b>Не удалось загрузить сайт</b><span>Откройте PR #2 в репозитории Zetgen84</span></div></div>';
+      console.error(error);
+    }
+  })();
+  </script>
+</body>
+</html>
