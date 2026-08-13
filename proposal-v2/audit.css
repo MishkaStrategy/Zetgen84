@@ -1,0 +1,100 @@
+/* Audit fixes layered over the primary visual system. */
+
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+[id] {
+  scroll-margin-top: 92px;
+}
+
+/* Keep keyboard focus visible without changing pointer hover styling. */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+}
+
+.cases a:focus-visible,
+.final-cta a:focus-visible,
+.developer-credit a:focus-visible {
+  outline-color: var(--fresh);
+}
+
+/* Stabilize absolutely positioned decorative labels. */
+.before-after,
+.sales-mark {
+  position: relative;
+}
+
+.format-card[hidden] {
+  display: none !important;
+}
+
+.reviews-rail[data-dragging="true"] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.review-frame,
+.product-shot,
+.final-product img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Graceful fallback where expensive glass filters are unavailable. */
+@supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  .site-header,
+  .glass-card,
+  .product-label {
+    background: rgba(244, 247, 239, .94);
+  }
+
+  .diagnosis-panel--friction {
+    background: #0b3526;
+  }
+}
+
+@media (max-width: 640px) {
+  .compare-arrow {
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .case-link {
+    overflow-wrap: anywhere;
+  }
+
+  .format-options li {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .contact-hook {
+    line-height: 1.35;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-bottom {
+    align-items: end;
+  }
+
+  .hero-bottom span {
+    max-width: 46%;
+  }
+
+  .format-tab {
+    min-width: 0;
+    line-height: 1.15;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reviews-rail {
+    scroll-snap-type: none;
+  }
+}
