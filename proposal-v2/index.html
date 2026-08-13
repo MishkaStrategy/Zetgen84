@@ -15,12 +15,14 @@
   <script>
   (async () => {
     const base = 'https://raw.githubusercontent.com/MishkaStrategy/Zetgen84/proposal-v2/proposal-v2/';
+    const rev = '?v=d1af968a';
+    const request = (file) => fetch(base + file + rev, { cache: 'no-store' });
     try {
       const [htmlRes, cssRes, auditRes, jsRes] = await Promise.all([
-        fetch(base + 'index.html'),
-        fetch(base + 'styles.css'),
-        fetch(base + 'audit.css'),
-        fetch(base + 'app.js')
+        request('index.html'),
+        request('styles.css'),
+        request('audit.css'),
+        request('app.js')
       ]);
       if (![htmlRes, cssRes, auditRes, jsRes].every(r => r.ok)) throw new Error('resource fetch failed');
       let [html, css, audit, js] = await Promise.all([
