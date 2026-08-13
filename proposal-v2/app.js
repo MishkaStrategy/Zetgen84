@@ -2,7 +2,14 @@
   const root = document.documentElement;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desktopCases = window.matchMedia('(min-width: 901px)');
+  const parallaxViewport = window.matchMedia('(min-width: 641px)');
   const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
+
+  // Keep audit fixes isolated from the primary art-direction stylesheet.
+  const auditStyles = document.createElement('link');
+  auditStyles.rel = 'stylesheet';
+  auditStyles.href = './audit.css';
+  document.head.append(auditStyles);
 
   root.classList.add('js');
 
@@ -27,7 +34,7 @@
     });
   }
 
-  // Native horizontal review rail with pointer drag; keyboard scrolling remains untouched.
+  // Native horizontal review rail with pointer drag and explicit keyboard controls.
   document.querySelectorAll('[data-drag-scroll]').forEach((rail) => {
     let active = false;
     let originX = 0;
@@ -40,6 +47,7 @@
 
     rail.addEventListener('pointerdown', (event) => {
       if (event.pointerType === 'touch') return;
+      event.preventDefault();
       active = true;
       originX = event.clientX;
       originScroll = rail.scrollLeft;
@@ -55,6 +63,16 @@
     rail.addEventListener('pointerup', stop);
     rail.addEventListener('pointercancel', stop);
     rail.addEventListener('lostpointercapture', stop);
+
+    rail.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const amount = Math.max(240, rail.clientWidth * 0.7);
+      if (event.key === 'ArrowLeft') rail.scrollBy({ left: -amount, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      if (event.key === 'ArrowRight') rail.scrollBy({ left: amount, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      if (event.key === 'Home') rail.scrollTo({ left: 0, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      if (event.key === 'End') rail.scrollTo({ left: rail.scrollWidth, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+    });
   });
 
   // Collaboration format tabs.
@@ -95,39 +113,42 @@
 
   // Placeholder CTAs: explicit state instead of invented contact details.
   const toast = document.querySelector('[data-toast]');
+  const toastMessage = toast?.textContent?.trim() || 'Контактная ссылка будет подключена после утверждения.';
+  if (toast) toast.textContent = '';
   let toastTimer;
+
   document.querySelectorAll('[data-placeholder-link]').forEach((link) => {
     link.addEventListener('click', (event) => {
       event.preventDefault();
       document.querySelector('#contact-hook')?.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'center' });
       if (!toast) return;
       clearTimeout(toastTimer);
+      toast.textContent = toastMessage;
       toast.classList.add('is-visible');
-      toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2600);
+      toastTimer = window.setTimeout(() => {
+        toast.classList.remove('is-visible');
+        toast.textContent = '';
+      }, 2600);
     });
   });
 
-  // Cursor glow is cosmetic and disabled on coarse pointers/reduced motion via CSS/logic.
+  // Cursor glow is cosmetic. Update only when the pointer moves instead of running a permanent animation loop.
   const cursorGlow = document.querySelector('.cursor-glow');
   const finePointer = window.matchMedia('(pointer: fine)').matches;
   if (cursorGlow && finePointer && !reduceMotion.matches) {
+    let glowFrame = 0;
     let pointerX = -400;
     let pointerY = -400;
-    let glowX = pointerX;
-    let glowY = pointerY;
 
     window.addEventListener('pointermove', (event) => {
       pointerX = event.clientX;
       pointerY = event.clientY;
+      if (glowFrame) return;
+      glowFrame = requestAnimationFrame(() => {
+        cursorGlow.style.transform = `translate3d(${pointerX - 160}px, ${pointerY - 160}px, 0)`;
+        glowFrame = 0;
+      });
     }, { passive: true });
-
-    const animateGlow = () => {
-      glowX += (pointerX - glowX) * 0.12;
-      glowY += (pointerY - glowY) * 0.12;
-      cursorGlow.style.transform = `translate3d(${glowX - 160}px, ${glowY - 160}px, 0)`;
-      requestAnimationFrame(animateGlow);
-    };
-    requestAnimationFrame(animateGlow);
   } else if (cursorGlow) {
     cursorGlow.hidden = true;
   }
@@ -165,7 +186,7 @@
   }
 
   function updateParallax() {
-    if (reduceMotion.matches) {
+    if (reduceMotion.matches || !parallaxViewport.matches) {
       parallaxItems.forEach((item) => { item.style.transform = ''; });
       return;
     }
@@ -196,6 +217,7 @@
   window.addEventListener('scroll', requestEffects, { passive: true });
   window.addEventListener('resize', requestEffects, { passive: true });
   desktopCases.addEventListener?.('change', requestEffects);
+  parallaxViewport.addEventListener?.('change', requestEffects);
   reduceMotion.addEventListener?.('change', () => {
     revealTargets.forEach((el) => el.classList.add('is-visible'));
     requestEffects();
