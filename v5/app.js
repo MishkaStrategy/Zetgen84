@@ -6,6 +6,13 @@
   const topbar = document.getElementById('topbar');
   const caseRail = document.querySelector('.case-rail');
   const caseProgress = document.getElementById('caseProgress');
+  const finalCta = document.querySelector('.final .button');
+  const heroVersion = document.querySelector('.hero-meta span:last-child');
+
+  // The project materials do not provide a public contact address,
+  // so the CTA stays inside the proposal instead of inventing one.
+  if (finalCta) finalCta.setAttribute('href', '#formats');
+  if (heroVersion) heroVersion.textContent = 'V5 / 2026';
 
   const updatePageProgress = () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
