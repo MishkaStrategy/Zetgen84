@@ -3,145 +3,332 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#eff1e8" />
-  <meta name="description" content="Персональное коммерческое предложение агентства СПУТНИК для Зетген-84." />
-  <title>СПУТНИК × Зетген-84 — От визуала к продажам</title>
+  <meta name="theme-color" content="#edf2e8" />
+  <meta name="description" content="Коммерческое предложение агентства СПУТНИК для Zetgen-84: брендинг, сайт, упаковка и digital-коммуникация." />
+  <title>СПУТНИК × Zetgen-84 — От визуала к продажам</title>
   <link rel="preload" as="image" href="https://zetgen-84.ru/wp-content/uploads/2025/01/DSC_0871.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <header class="topbar">
-    <a class="brand" href="#hero" aria-label="СПУТНИК — наверх">СПУТНИК<span>®</span></a>
-    <nav class="topnav" aria-label="Навигация">
-      <a href="#cases">Кейсы</a><a href="#proposal">Предложение</a><a href="#formats">Форматы</a>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="page-progress" aria-hidden="true"><span id="pageProgress"></span></div>
+
+  <header class="site-header" id="top">
+    <a class="wordmark" href="#hero" aria-label="СПУТНИК, к началу страницы">СПУТНИК<span>®</span></a>
+    <nav class="site-nav" aria-label="Навигация по предложению">
+      <a href="#cases">Кейсы</a>
+      <a href="#scope">Работа</a>
+      <a href="#formats">Форматы</a>
     </nav>
-    <a class="mini-cta" href="#final">Начать проект ↗</a>
+    <a class="header-cta" href="#final">Обсудить <span>↗</span></a>
   </header>
 
   <main>
     <section class="hero" id="hero" data-section>
-      <div class="hero-grid"></div>
-      <div class="orb orb-a"></div><div class="orb orb-b"></div><div class="glass-loop"></div>
-      <div class="eyebrow reveal">Коммерческое предложение · 2026</div>
-      <h1 class="hero-title reveal"><span>От визуала</span><span class="indent">к продажам</span></h1>
-      <div class="hero-note reveal">Агентство СПУТНИК<br />специально для Зетген-84</div>
-      <div class="product-stage" data-parallax="0.06">
-        <div class="product-halo"></div>
-        <div class="product-glass"></div>
-        <img src="https://zetgen-84.ru/wp-content/uploads/2025/01/DSC_0871.png" alt="Реальная продукция Зетген-84" class="product-image" />
-        <div class="product-chip">Сильный продукт<br /><b>нуждается в сильной упаковке</b></div>
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow reveal">Коммерческое предложение <span>2026</span></p>
+        <h1 class="hero-title reveal">
+          <span>От визуала</span>
+          <span class="hero-title-accent">к продажам</span>
+        </h1>
+        <div class="hero-meta reveal">
+          <p><b>СПУТНИК × Zetgen-84</b></p>
+          <p>Создаём цельную визуальную систему для бренда: от айдентики и упаковки до сайта и социальных сетей.</p>
+        </div>
       </div>
-      <a class="scroll-cue" href="#about">Листайте, чтобы увидеть потенциал бренда <span>↓</span></a>
+
+      <div class="hero-visual reveal" data-parallax="0.035">
+        <div class="visual-label"><span>Product / 01</span><span>Сильная основа бренда</span></div>
+        <div class="product-photo-wrap">
+          <img
+            class="product-photo"
+            src="https://zetgen-84.ru/wp-content/uploads/2025/01/DSC_0871.png"
+            alt="Продукция Zetgen-84"
+            decoding="async"
+            fetchpriority="high"
+            onerror="this.onerror=null;this.src='assets/zetgen-product.jpg'"
+          />
+        </div>
+        <div class="glass-disc disc-one" aria-hidden="true"></div>
+        <div class="glass-disc disc-two" aria-hidden="true"></div>
+        <div class="glass-ring" aria-hidden="true"></div>
+      </div>
+
+      <div class="hero-footer reveal">
+        <span>Агентство полного цикла</span>
+        <a href="#about">Смотреть предложение <i>↓</i></a>
+      </div>
     </section>
 
-    <section class="about section-pad" id="about" data-section>
-      <div class="section-kicker reveal">02 · О нас</div>
-      <h2 class="display reveal">Мы создаём бренды,<br /><span class="indent">готовые к встрече</span><br />с клиентами</h2>
-      <p class="lead reveal">Мы — дизайнерское агентство полного цикла. Подготавливаем бренд к выходу на рынок и каждой точке встречи с клиентом.</p>
-      <div class="stats" aria-label="Показатели агентства">
-        <div class="stat reveal"><strong>10+</strong><span>брендов<br />создано с нуля</span></div>
-        <div class="stat stat-wide reveal"><strong>25+</strong><span>запущенных<br />сайтов</span></div>
-        <div class="stat reveal"><strong>5+</strong><span>аккаунтов<br />на ведении</span></div>
-        <div class="stat infinity reveal"><strong>∞</strong><span>любви к<br />своей работе</span></div>
+    <section class="about section" id="about" data-section>
+      <div class="section-grid">
+        <div class="section-index reveal">01 / О нас</div>
+        <div class="section-heading-wrap">
+          <h2 class="display reveal">Создаём бренды, сайты<br />и визуальные системы,<br /><span>готовые к встрече с клиентом.</span></h2>
+          <p class="section-lead reveal">Подготавливаем бренд к рынку и каждой точке контакта с аудиторией. Стратегия, дизайн и digital собираются в одну рабочую систему.</p>
+        </div>
       </div>
-      <div class="reviews-head"><span>Отзывы клиентов</span><span>горизонтальный архив →</span></div>
-      <div class="reviews" aria-label="Архив отзывов">
-        <article class="review-paper r1"><div class="review-photo ghost-photo"></div><small>ОТЗЫВ / 01</small><h3>После запуска стало проще презентовать проект как цельный бренд.</h3><span>Фрагмент клиентской обратной связи</span></article>
-        <article class="review-paper r2"><div class="review-ui"><i></i><i></i><i></i><i></i></div><small>ОТЗЫВ / 02</small><h3>Команда увидела систему, а не набор отдельных макетов.</h3><span>Фрагмент клиентской обратной связи</span></article>
-        <article class="review-paper r3"><div class="review-photo mesh-photo"></div><small>ОТЗЫВ / 03</small><h3>Визуал начал работать на восприятие продукта ещё до первого разговора.</h3><span>Фрагмент клиентской обратной связи</span></article>
-        <article class="review-paper r4"><div class="review-ui dark"><i></i><i></i><i></i></div><small>ОТЗЫВ / 04</small><h3>Редизайн дал ощущение нового этапа и внутри команды, и снаружи.</h3><span>Фрагмент клиентской обратной связи</span></article>
+
+      <div class="metrics" aria-label="Опыт агентства">
+        <article class="metric reveal"><strong>10+</strong><p>брендов<br />созданы с нуля</p></article>
+        <article class="metric reveal"><strong>25+</strong><p>сайтов<br />разработано</p></article>
+        <article class="metric reveal"><strong>5+</strong><p>проектов<br />на сопровождении</p></article>
       </div>
-      <p class="micro-note">Фотографии/скриншоты отзывов можно заменить на утверждённые материалы СПУТНИК без перестройки композиции.</p>
+
+      <div class="archive-head reveal">
+        <span>Практика СПУТНИК</span>
+        <span>горизонтальный архив →</span>
+      </div>
+      <div class="archive" aria-label="Проекты агентства">
+        <article class="archive-card archive-green">
+          <div class="archive-shot shot-valero" aria-hidden="true">
+            <span class="shot-kicker">BEAUTY / EDUCATION</span>
+            <b>Сан<br />Валеро</b>
+            <i>SV</i>
+          </div>
+          <div class="archive-caption"><span>01</span><h3>Академия «Сан Валеро»</h3><p>Редизайн бренда и сайта.</p></div>
+        </article>
+        <article class="archive-card archive-violet">
+          <div class="archive-shot shot-sofia" aria-hidden="true">
+            <span>SOFIA</span><b>Учиться<br />понятно.</b><i>S</i>
+          </div>
+          <div class="archive-caption"><span>02</span><h3>Sofia School</h3><p>Сайт и печатные материалы.</p></div>
+        </article>
+        <article class="archive-card archive-forest">
+          <div class="archive-shot shot-taiga" aria-hidden="true">
+            <span>TAIGA / OZERO</span><b>Тишина<br />рядом.</b><i>↗</i>
+          </div>
+          <div class="archive-caption"><span>03</span><h3>«Тайга Озеро»</h3><p>Сайт и социальные сети.</p></div>
+        </article>
+      </div>
     </section>
 
     <section class="cases" id="cases" data-section>
-      <div class="cases-intro section-pad">
-        <div class="section-kicker reveal">03 · Наши показатели / кейсы</div>
-        <h2 class="display reveal">Мы меняем не только визуал.<br /><span class="indent">Мы меняем результат.</span></h2>
+      <div class="cases-intro section">
+        <div class="section-index reveal">02 / Кейсы</div>
+        <h2 class="display display-light reveal">Работаем с системой целиком.<br /><span>От первого экрана до носителей.</span></h2>
+        <p class="section-lead light reveal">Три проекта показывают разный масштаб задач: образование, digital и hospitality.</p>
       </div>
+
       <div class="cases-scroll" id="casesScroll">
         <div class="cases-sticky">
           <div class="case-track" id="caseTrack">
-            <article class="case case-one">
-              <div class="case-num">01 / 03</div>
-              <div class="case-copy"><p>Академия</p><h3>Сан Валеро</h3><a href="https://www.san-valero.ru/" target="_blank" rel="noreferrer">san-valero.ru ↗</a><p class="result">Редизайн помог сделать академию привлекательнее для молодой аудитории, обновить восприятие бренда и поддержать рост интереса к обучению и команде.</p></div>
-              <div class="compare">
-                <div class="browser before"><div class="browserbar"><i></i><i></i><i></i><span>san-valero.ru</span></div><div class="sv-old"><b>SAN VALERO</b><span>АКАДЕМИЯ КРАСОТЫ</span><div class="old-lines"></div></div><label>БЫЛО</label></div>
-                <div class="arrow">→</div>
-                <div class="browser after"><div class="browserbar"><i></i><i></i><i></i><span>new.san-valero</span></div><div class="sv-new"><small>BEAUTY / EDUCATION</small><b>Новая энергия<br />профессии.</b><div class="green-pill">НОВЫЙ ВИЗУАЛ</div></div><label>СТАЛО</label></div>
+            <article class="case-card case-valero">
+              <div class="case-copy">
+                <span class="case-no">01 / 03</span>
+                <p class="case-type">Академия красоты</p>
+                <h3>Сан Валеро</h3>
+                <div class="case-tags"><span>брендинг</span><span>сайт</span></div>
+                <p class="case-result"><b>Результат</b> Обновили визуальный образ академии, усилили коммуникацию с молодой аудиторией и сделали бренд современнее и узнаваемее.</p>
+              </div>
+              <div class="case-visual valero-visual" aria-hidden="true">
+                <div class="browser browser-old">
+                  <div class="browser-bar"><i></i><i></i><i></i></div>
+                  <div class="old-site"><small>BEAUTY ACADEMY</small><b>SAN<br />VALERO</b><span>старая цифровая система</span></div>
+                </div>
+                <div class="switch-arrow">→</div>
+                <div class="browser browser-new">
+                  <div class="browser-bar"><i></i><i></i><i></i></div>
+                  <div class="new-site"><small>NEW IDENTITY / 2026</small><b>Учиться<br />красиво.</b><span>новая система бренда</span></div>
+                </div>
               </div>
             </article>
 
-            <article class="case case-two">
-              <div class="case-num">02 / 03</div>
-              <div class="case-copy"><p>Образовательный проект</p><h3>Sofia School</h3><a href="https://sofia-school.ru/" target="_blank" rel="noreferrer">sofia-school.ru ↗</a><ul><li>сайт</li><li>печатная продукция</li><li>единый визуальный образ</li></ul><p class="result">Новая цифровая упаковка помогает школе профессиональнее презентовать образовательный продукт и поддерживает привлечение новых студентов.</p></div>
-              <div class="sofia-scene"><div class="sofia-site"><span>SOFIA</span><h4>Все репетиторы<br />в одном месте</h4><div class="sofia-btn">НАЧАТЬ ОБУЧЕНИЕ</div></div><div class="paper p-a">SOFIA<br/><b>WORKBOOK</b></div><div class="paper p-b">S / 24</div><div class="coin">S</div></div>
+            <article class="case-card case-sofia">
+              <div class="case-copy">
+                <span class="case-no">02 / 03</span>
+                <p class="case-type">Образовательный проект</p>
+                <h3>Sofia School</h3>
+                <div class="case-tags"><span>сайт</span><span>print</span></div>
+                <p class="case-result"><b>Результат</b> Создали понятную цифровую точку контакта с потенциальными студентами и собрали коммуникацию проекта в единую визуальную систему.</p>
+              </div>
+              <div class="case-visual sofia-visual" aria-hidden="true">
+                <div class="sofia-web"><small>SOFIA SCHOOL</small><b>Знания,<br />которые<br />собраны.</b><span>START →</span></div>
+                <div class="sofia-paper paper-a"><small>STUDY / 01</small><b>SOFIA</b></div>
+                <div class="sofia-paper paper-b"><b>S</b></div>
+                <div class="sofia-token">S</div>
+              </div>
             </article>
 
-            <article class="case case-three">
-              <div class="case-num">03 / 03</div>
-              <div class="case-copy"><p>Hospitality</p><h3>Тайга & Озеро</h3><a href="https://taigaozero.ru/" target="_blank" rel="noreferrer">taigaozero.ru ↗</a><ul><li>новый сайт</li><li>социальные сети</li><li>постоянное ведение</li></ul><p class="result">Цельная digital-коммуникация помогает бренду привлекать новых подписчиков и гостей и поддерживать спрос за пределами высокого сезона.</p></div>
-              <div class="taiga-scene"><div class="lake"></div><div class="mountain m1"></div><div class="mountain m2"></div><div class="taiga-phone"><small>TAIGA & OZERO</small><b>Тишина,<br />которую<br />запоминают.</b><span>BOOK →</span></div><div class="social-card s-a">01<br/><b>LAKE</b></div><div class="social-card s-b">02<br/><b>CEDAR</b></div></div>
+            <article class="case-card case-taiga">
+              <div class="case-copy">
+                <span class="case-no">03 / 03</span>
+                <p class="case-type">Hospitality</p>
+                <h3>Тайга Озеро</h3>
+                <div class="case-tags"><span>сайт</span><span>social</span></div>
+                <p class="case-result"><b>Результат</b> Обновили визуальную коммуникацию, увеличили активность аудитории и поддержали привлечение подписчиков и гостей в низкий сезон.</p>
+              </div>
+              <div class="case-visual taiga-visual" aria-hidden="true">
+                <div class="taiga-landscape"><i class="mountain mountain-a"></i><i class="mountain mountain-b"></i><i class="lake"></i></div>
+                <div class="taiga-phone"><small>TAIGA / OZERO</small><b>Сибирь<br />ближе.</b><span>BOOK →</span></div>
+                <div class="taiga-card card-a"><small>01</small><b>ОЗЕРО</b></div>
+                <div class="taiga-card card-b"><small>02</small><b>ТАЙГА</b></div>
+              </div>
             </article>
           </div>
-          <div class="case-progress"><span id="caseProgress"></span></div>
+          <div class="case-ui">
+            <span>03 кейса</span>
+            <div class="case-progress"><i id="caseProgress"></i></div>
+            <span>drag / scroll</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="you section-pad" id="you" data-section>
-      <div class="section-kicker reveal">04 · О вас</div>
-      <h2 class="display giant reveal">У вас уже есть главное —<br /><span class="indent">сильный продукт.</span></h2>
-      <p class="lead reveal">Зетген-84 работает на рынке более 10 лет. У бренда есть производственная экспертиза, сформированная линейка товаров и собственная цифровая площадка. Следующий шаг — сделать визуальную систему сопоставимой с качеством продукта.</p>
-      <div class="diagnosis">
-        <div class="diag-col positive"><span class="diag-title">Уже есть</span><ol><li><b>01</b> Более 10 лет на рынке</li><li><b>02</b> Собственное производство</li><li><b>03</b> Сайт с интернет-магазином</li><li><b>04</b> Разные продукты</li><li><b>05</b> Сформированный продукт</li></ol></div>
-        <div class="diag-col friction"><span class="diag-title">Что мешает расти</span><ol><li><b>01</b> Устаревший визуальный стиль</li><li><b>02</b> Разрозненная коммуникация</li><li><b>03</b> Сайт не раскрывает продукт</li><li><b>04</b> Слабое присутствие в соцсетях</li><li><b>05</b> Нет цельной современной идентичности</li></ol></div>
+    <section class="brand-diagnosis section" id="diagnosis" data-section>
+      <div class="section-grid diagnosis-top">
+        <div class="section-index reveal">03 / О вас</div>
+        <div class="section-heading-wrap">
+          <h2 class="display reveal">У Zetgen-84 уже есть<br /><span>сильная основа для роста.</span></h2>
+          <p class="section-lead reveal">Более 10 лет на рынке, собственное производство и широкая продуктовая линейка. Задача СПУТНИК – собрать коммуникацию бренда в единую современную систему.</p>
+        </div>
       </div>
-      <div class="transition reveal"><small>Но теперь</small><h3>у вас есть мы.</h3><p>И мы знаем, как превратить сильный продукт в сильный бренд.</p></div>
+
+      <div class="diagnosis-cards">
+        <article class="diagnosis-card strength reveal">
+          <div class="diag-head"><span>01</span><h3>Сильные стороны</h3></div>
+          <ul>
+            <li><span>01</span>Более 10 лет на рынке</li>
+            <li><span>02</span>Собственное производство</li>
+            <li><span>03</span>Интернет-магазин</li>
+            <li><span>04</span>Широкая продуктовая линейка</li>
+            <li><span>05</span>Качественный продукт</li>
+          </ul>
+          <div class="diag-orb" aria-hidden="true"></div>
+        </article>
+        <article class="diagnosis-card growth reveal">
+          <div class="diag-head"><span>02</span><h3>Точки роста</h3></div>
+          <ul>
+            <li><span>01</span>Устаревший визуальный стиль</li>
+            <li><span>02</span>Разрозненная коммуникация</li>
+            <li><span>03</span>Сайт требует обновления</li>
+            <li><span>04</span>Слабое присутствие в социальных сетях</li>
+            <li><span>05</span>Нет единой визуальной системы</li>
+          </ul>
+          <div class="diag-grid" aria-hidden="true"></div>
+        </article>
+      </div>
+
+      <div class="diagnosis-statement reveal">
+        <span>Задача</span>
+        <p>Обновить ключевые точки контакта и сделать визуальную коммуникацию сопоставимой с масштабом продукта.</p>
+      </div>
     </section>
 
-    <section class="proposal section-pad" id="proposal" data-section>
-      <div class="section-kicker reveal">05 · Что мы предлагаем</div>
-      <h2 class="display reveal">Не отдельный дизайн.<br /><span class="indent">Единая система роста.</span></h2>
-      <div class="roadmap" id="roadmap"><div class="road-line"><span id="roadFill"></span></div>
-        <article class="road-step reveal"><div class="step-no">01</div><div><h3>Анализ</h3><p>Исследуем рынок, конкурентов, аудиторию, B2B и B2C-сегменты, текущее позиционирование и точки роста.</p><div class="tags"><span>рынок</span><span>конкуренты</span><span>ЦА</span><span>B2B</span><span>B2C</span><span>позиционирование</span></div></div></article>
-        <article class="road-step reveal"><div class="step-no">02</div><div><h3>Брендбук</h3><p>Редизайн логотипа, цветовая и шрифтовая система, фирменная графика, фотостиль, дизайн-система и демонстрация на реальных носителях.</p><div class="mini-art brand-art"><i></i><i></i><i></i></div></div></article>
-        <article class="road-step split-step reveal"><div class="step-no">03</div><div><h3>Сайт</h3><p>Полноценная цифровая площадка Зетген-84: презентация + интернет-магазин + каталог + карточки товаров + формы сотрудничества + адаптив.</p><div class="dual"><div><b>B2B</b><span>партнёры, компании, дилеры, опт</span></div><div><b>B2C</b><span>конечный покупатель</span></div></div></div></article>
-        <article class="road-step reveal"><div class="step-no">04</div><div><h3>Печатная продукция</h3><p>Новая упаковка, визитки, баннеры, презентационные и раздаточные материалы — в одной физической системе бренда.</p></div></article>
-        <article class="road-step reveal"><div class="step-no">05</div><div><h3>Социальные сети</h3><p>Оформление, контент-система, регулярное ведение, дизайн публикаций, короткое видео, коммуникация с аудиторией и блогерами.</p></div></article>
+    <section class="scope section" id="scope" data-section>
+      <div class="section-grid">
+        <div class="section-index reveal">04 / Что входит в работу</div>
+        <div class="section-heading-wrap">
+          <h2 class="display reveal">Пять этапов.<br /><span>Одна визуальная система.</span></h2>
+        </div>
       </div>
-      <div class="road-result reveal"><span>Результат</span><strong>единый бренд во всех точках контакта с клиентом.</strong></div>
+
+      <div class="scope-list" id="roadmap">
+        <article class="scope-row reveal">
+          <span class="scope-no">01</span>
+          <h3>Аналитика</h3>
+          <div class="scope-copy"><p>Изучаем рынок, конкурентов, целевую аудиторию, позиционирование, текущую коммуникацию и точки роста.</p><div class="tag-row"><span>рынок</span><span>конкуренты</span><span>ЦА</span><span>позиционирование</span></div></div>
+        </article>
+        <article class="scope-row reveal">
+          <span class="scope-no">02</span>
+          <h3>Брендинг</h3>
+          <div class="scope-copy"><p>Редизайн логотипа, фирменные цвета, типографика, графические элементы, визуализация на носителях и брендбук.</p><div class="tag-row"><span>logo</span><span>color</span><span>type</span><span>brandbook</span></div></div>
+        </article>
+        <article class="scope-row reveal">
+          <span class="scope-no">03</span>
+          <h3>Сайт</h3>
+          <div class="scope-copy"><p>Отдельные сценарии для B2B и B2C, каталог продукции, интернет-магазин, производство, формы связи и путь к покупке или заявке.</p><div class="audience-pills"><span><b>B2B</b> партнёры и опт</span><span><b>B2C</b> конечный покупатель</span></div></div>
+        </article>
+        <article class="scope-row reveal">
+          <span class="scope-no">04</span>
+          <h3>Упаковка и print</h3>
+          <div class="scope-copy"><p>Дизайн упаковки, продуктовая линейка, визитки, баннеры, презентационные и раздаточные материалы.</p><div class="tag-row"><span>packaging</span><span>print</span><span>presentation</span></div></div>
+        </article>
+        <article class="scope-row reveal">
+          <span class="scope-no">05</span>
+          <h3>Социальные сети</h3>
+          <div class="scope-copy"><p>Оформление аккаунтов, дизайн публикаций, регулярное ведение, контент и работа с блогерами и лидерами мнений.</p><div class="tag-row"><span>social</span><span>content</span><span>influence</span></div></div>
+        </article>
+      </div>
     </section>
 
-    <section class="benefits section-pad" id="benefits" data-section>
-      <div class="section-kicker reveal">06 · Что вам это даёт</div>
-      <h2 class="display reveal">Визуал начинает<br /><span class="indent">работать на бизнес.</span></h2>
+    <section class="outcomes section" id="outcomes" data-section>
+      <div class="section-grid outcomes-head">
+        <div class="section-index reveal">05 / Что получает Zetgen-84</div>
+        <div class="section-heading-wrap">
+          <h2 class="display reveal">Дизайн работает<br /><span>на бизнес-задачи.</span></h2>
+        </div>
+      </div>
+
       <div class="bento">
-        <article class="benefit b1 reveal"><small>01</small><h3>Новые клиенты</h3><strong>B2B + B2C</strong><p>Одинаково уверенная коммуникация с конечным покупателем и корпоративным сегментом.</p></article>
-        <article class="benefit b2 reveal"><small>02</small><h3>Более платёжеспособная аудитория</h3><div class="value-ring">↑</div><p>Сильная упаковка повышает воспринимаемую ценность продукта.</p></article>
-        <article class="benefit b3 reveal"><small>03</small><h3>Узнаваемость</h3><p>Визуальный образ, который можно идентифицировать без логотипа.</p></article>
-        <article class="benefit b4 reveal"><small>04</small><div class="sales-orb"></div><h3>Прямые продажи</h3><strong>Свой сайт.<br />Своя аудитория.</strong><p>Продажи через собственную цифровую площадку без комиссии агрегаторов.</p></article>
-        <article class="benefit b5 reveal"><small>05</small><h3>Визуальная идентичность</h3><p>Вместо отдельных материалов появляется единая масштабируемая система.</p></article>
-        <article class="benefit b6 reveal"><small>06</small><h3>Доверие покупателей</h3><p>Профессиональная упаковка делает продукт понятнее и усиливает доверие к бренду.</p></article>
+        <article class="bento-card bento-large reveal">
+          <span class="bento-no">01</span><h3>Новые<br />клиенты</h3><p>Привлечение B2B- и B2C-аудитории.</p>
+          <div class="bento-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+        </article>
+        <article class="bento-card bento-value reveal">
+          <span class="bento-no">02</span><h3>Выше воспринимаемая ценность</h3><p>Современная визуальная коммуникация усиливает восприятие продукта.</p><strong>↑</strong>
+        </article>
+        <article class="bento-card bento-dark reveal">
+          <span class="bento-no">03</span><h3>Узнаваемость</h3><p>Единая система делает бренд заметным во всех каналах.</p><div class="brand-tile">Z84</div>
+        </article>
+        <article class="bento-card bento-sales reveal">
+          <span class="bento-no">04</span><h3>Прямые продажи</h3><p>Сайт становится дополнительным каналом продаж без комиссии агрегаторов.</p><div class="sales-chart" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="bento-card bento-id reveal">
+          <span class="bento-no">05</span><h3>Визуальная идентичность</h3><p>Один стиль для сайта, упаковки, социальных сетей и печатных материалов.</p><div class="id-swatches"><i></i><i></i><i></i></div>
+        </article>
+        <article class="bento-card bento-trust reveal">
+          <span class="bento-no">06</span><h3>Доверие</h3><p>Профессиональная коммуникация помогает покупателю быстрее принять решение.</p><div class="trust-mark">✓</div>
+        </article>
       </div>
     </section>
 
-    <section class="formats section-pad" id="formats" data-section>
-      <div class="section-kicker reveal">07 · Варианты сотрудничества</div>
-      <h2 class="display reveal">Выберите формат,<br /><span class="indent">который подходит бизнесу сейчас</span></h2>
-      <div class="format-list">
-        <article class="format-card primary reveal"><div class="format-top"><span>Вариант 01 · рекомендуем</span><span>Проектная работа</span></div><h3>Полностью переодеваем бренд <em>под ключ.</em></h3><div class="format-data"><div><small>Срок</small><b>от 1 месяца</b></div><div><small>Стоимость</small><b>от 90 000 ₽</b></div><div><small>Оплата</small><b>50/50 · этапы · рассрочка</b></div></div><a class="cta-light" href="#final">Обсудить проект ↗</a></article>
-        <article class="format-card secondary reveal"><div class="format-top"><span>Вариант 02</span><span>Постоянная основа</span></div><h3>Становимся внешней дизайн-командой <em>Зетген-84.</em></h3><div class="format-data"><div><small>Срок</small><b>ежемесячно</b></div><div><small>Стоимость</small><b>от 40 000 ₽ / мес.</b></div><div><small>Формат</small><b>удалённо / гибрид</b></div></div><a class="cta-dark" href="#final">Обсудить сотрудничество ↗</a></article>
+    <section class="formats section" id="formats" data-section>
+      <div class="section-grid formats-head">
+        <div class="section-index reveal">06 / Варианты сотрудничества</div>
+        <div class="section-heading-wrap">
+          <h2 class="display reveal">Два формата<br /><span>под разные задачи.</span></h2>
+        </div>
+      </div>
+
+      <div class="format-grid">
+        <article class="format-card project-format reveal">
+          <div class="format-top"><span>01 / Проектная работа</span><span>от 1 месяца</span></div>
+          <h3>Бренд<br />под ключ</h3>
+          <p class="format-desc">Комплексная работа от аналитики и айдентики до сайта, упаковки и digital-коммуникации.</p>
+          <div class="price"><small>Стоимость</small><strong>от 90 000 ₽</strong></div>
+          <div class="format-bottom"><span>50% + 50%</span><span>поэтапно</span><span>рассрочка</span></div>
+        </article>
+        <article class="format-card support-format reveal">
+          <div class="format-top"><span>02 / Постоянное сопровождение</span><span>ежемесячно</span></div>
+          <h3>Дизайнер<br />для бренда</h3>
+          <p class="format-desc">Регулярная работа с визуальными задачами компании и контентом. Удалённо или в гибридном формате.</p>
+          <div class="price"><small>Стоимость</small><strong>от 40 000 ₽ <em>/ месяц</em></strong></div>
+          <div class="format-bottom"><span>design</span><span>content</span><span>support</span></div>
+        </article>
       </div>
     </section>
 
     <section class="final" id="final" data-section>
-      <div class="final-orb"></div><img src="https://zetgen-84.ru/wp-content/uploads/2025/01/DSC_0871.png" class="final-product" alt="Продуктовая линейка Зетген-84" />
-      <div class="final-copy"><div class="section-kicker reveal">08 · Следующий шаг</div><h2 class="final-title reveal">Готовы<br /><span>начать?</span></h2><p class="reveal">У Зетген уже есть сильный продукт.<br />Теперь сделаем таким же сильным бренд вокруг него.</p><div class="final-actions reveal"><a class="big-cta" href="mailto:zetgen.84@mail.ru?subject=Проект%20Зетген-84%20×%20СПУТНИК">Начать проект ↗</a><a class="text-cta" href="#formats">Посмотреть форматы ↑</a></div></div>
-      <div class="final-footer"><span>СПУТНИК × ЗЕТГЕН-84</span><span>Коммерческое предложение · 2026</span></div>
+      <div class="final-grid" aria-hidden="true"></div>
+      <div class="final-copy">
+        <span class="final-index reveal">07 / Следующий шаг</span>
+        <h2 class="reveal">Готовы<br />начать?</h2>
+        <p class="reveal">Обсудим задачи Zetgen-84 и определим первый этап работы.</p>
+        <a class="final-cta reveal" href="#formats"><span>Обсудить проект</span><i>↗</i></a>
+      </div>
+      <div class="final-object" aria-hidden="true">
+        <div class="final-orb"></div>
+        <div class="final-ring"></div>
+        <div class="final-glass"></div>
+      </div>
+      <div class="final-footer">
+        <span>СПУТНИК × Zetgen-84</span><span>Коммерческое предложение / 2026</span>
+      </div>
     </section>
   </main>
+
   <script src="app.js"></script>
 </body>
 </html>
