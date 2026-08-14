@@ -213,7 +213,7 @@ img { max-width: 100%; display: block; }
 .benefit-dark { grid-column: span 5; background: var(--forest); color: white; }
 .benefit-dark p, .benefit-dark > span { color: rgba(255,255,255,.6); }
 .benefit-line { grid-column: span 5; background: transparent; }
-.benefit-tall { grid-column: span 4; grid-row: span 2; min-height: 500px; background: #d9e2cd; }
+.benefit-tall { grid-column: span 4; background: #d9e2cd; }
 .benefit-tall b { position: absolute; right: -8px; bottom: -28px; font-size: 140px; letter-spacing: -.08em; line-height: 1; opacity: .08; }
 .benefit-soft { grid-column: span 4; background: #f4f4ec; }
 .benefit-accent { grid-column: span 4; background: var(--green); color: white; }
