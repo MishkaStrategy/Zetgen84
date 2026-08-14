@@ -103,7 +103,7 @@ img { max-width: 100%; display: block; }
   transition: transform .25s var(--ease), opacity .2s ease, background .25s ease;
 }
 .button:hover { transform: translateY(-2px) scale(1.015); }
-.button:focus-visible, .nav a:focus-visible, .nav-cta:focus-visible, .brand:focus-visible, .scroll-cue:focus-visible { outline: 2px solid var(--green-3); outline-offset: 4px; }
+.button:focus-visible, .nav a:focus-visible, .nav-cta:focus-visible, .brand:focus-visible { outline: 2px solid var(--green-3); outline-offset: 4px; }
 .button-dark { background: var(--ink); color: white; box-shadow: 0 12px 30px rgba(17,21,15,.18); }
 
 .product-panel {
@@ -123,8 +123,6 @@ img { max-width: 100%; display: block; }
 .hero-orbit { position: absolute; z-index: 3; pointer-events: none; border-radius: 50%; border: 1px solid rgba(255,255,255,.4); box-shadow: inset 0 0 40px rgba(255,255,255,.2), 0 20px 50px rgba(22,72,38,.12); backdrop-filter: blur(4px); }
 .orbit-a { width: clamp(120px, 15vw, 230px); aspect-ratio: 1; right: -4vw; top: 17vh; background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.58), rgba(156,204,119,.14) 38%, rgba(22,72,38,.12)); }
 .orbit-b { width: clamp(78px, 9vw, 142px); aspect-ratio: 1; left: 46%; bottom: 12vh; background: radial-gradient(circle at 25% 22%, rgba(255,255,255,.7), rgba(85,150,95,.16) 55%, transparent); }
-.scroll-cue { position: absolute; left: calc(50% - 23px); bottom: 22px; z-index: 8; width: 46px; height: 72px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; border: 1px solid rgba(17,21,15,.2); border-radius: 30px; background: rgba(241,242,233,.75); backdrop-filter: blur(8px); }
-.scroll-cue small { font-size: 8px; writing-mode: vertical-rl; text-transform: uppercase; letter-spacing: .13em; }
 
 .about { background: var(--paper); }
 .about-intro { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, .6fr); gap: clamp(40px, 7vw, 120px); align-items: end; }
@@ -277,7 +275,6 @@ img { max-width: 100%; display: block; }
   .hero-title { font-size: clamp(70px, 14vw, 122px); }
   .hero-title span:last-child { margin-left: 6vw; }
   .product-panel { min-height: 72svh; }
-  .scroll-cue { display: none; }
   .orbit-b { left: 72%; bottom: 47%; }
   .about-intro, .benefits-head { grid-template-columns: 1fr; }
   .about-intro .lead, .benefits-head .lead { margin-top: 36px; }
