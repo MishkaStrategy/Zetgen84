@@ -42,6 +42,7 @@
   `;
   document.head.appendChild(caseStyle);
 
+
   const posterMarkup = {
     'poster-san': `
       <div class="case-original-canvas">
