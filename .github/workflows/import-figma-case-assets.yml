@@ -1,0 +1,41 @@
+name: Import original Figma case assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-figma-case-assets.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download original Figma assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p final/assets/cases
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/0ec03512-a0b6-4285-a202-55a50e1c78c3.png' -o final/assets/cases/san-macbook-15.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/70c2ce9b-dc5a-4b56-ba1d-9bf51d0386ff.png' -o final/assets/cases/san-macbook-m2.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/86825560-5ea2-41c7-980e-160e8721ae3b.png' -o final/assets/cases/san-screen.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/1b277497-b3a9-4759-94fc-7ee6889facf6.png' -o final/assets/cases/sofia-image.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/3412f77d-b272-4614-acfb-035e91218a11.png' -o final/assets/cases/sofia-pro.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/0bd38092-77cf-4e22-91a5-68d4cdb83384.png' -o final/assets/cases/sofia-this.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/91072324-8379-4218-a697-72f504f0ab90.png' -o final/assets/cases/sofia-hand.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/23c3a756-da0c-41f8-9a92-4a4cb4b1c2e3.png' -o final/assets/cases/taiga-mac-studio.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/ebfeaa03-de9f-47c1-89f0-9d4e5ce48351.png' -o final/assets/cases/taiga-hand.png
+          curl -fL --retry 3 'https://www.figma.com/api/mcp/asset/76a46e9b-420d-421c-baa7-fd521bdfdf8f.png' -o final/assets/cases/taiga-screen.png
+      - name: Commit assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add final/assets/cases
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Import original Figma case assets'
+          git push
