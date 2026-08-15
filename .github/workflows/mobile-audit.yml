@@ -112,7 +112,7 @@ jobs:
           print('OK: desktop V4 is isolated from mobile override layer')
           PY
 
-      - name: Render smoke audit at mobile widths
+      - name: Full-page render smoke audit
         shell: bash
         run: |
           set -euo pipefail
@@ -127,30 +127,27 @@ jobs:
           render() {
             local width="$1"
             local height="$2"
-            local anchor="$3"
-            local name="$4"
+            local name="$3"
             "$BROWSER" --headless --disable-gpu --no-sandbox --hide-scrollbars \
-              --virtual-time-budget=1800 --window-size="${width},${height}" \
+              --virtual-time-budget=2200 --window-size="${width},${height}" \
               --screenshot="audit-shots/${name}.png" \
-              "http://127.0.0.1:4173/final/${anchor}" >/tmp/chrome-${name}.log 2>&1
+              "http://127.0.0.1:4173/final/" >/tmp/chrome-${name}.log 2>&1
             test -s "audit-shots/${name}.png"
           }
 
-          render 360 800 '' mobile-360-hero
-          render 390 844 '#cases' mobile-390-cases
-          render 390 844 '#diagnosis' mobile-390-diagnosis
-          render 390 844 '#benefits' mobile-390-benefits
-          render 390 844 '#formats' mobile-390-formats
-          render 390 844 '#final' mobile-390-final
-          render 768 1024 '#cases' tablet-768-cases
+          render 360 800 mobile-360-hero
+          render 390 12000 mobile-390-full
+          render 768 11000 tablet-768-full
 
           python - <<'PY'
           from pathlib import Path
           shots=list(Path('audit-shots').glob('*.png'))
-          assert len(shots) == 7, f'expected 7 screenshots, got {len(shots)}'
-          tiny=[p for p in shots if p.stat().st_size < 10000]
-          assert not tiny, f'suspiciously small screenshots: {tiny}'
-          print('OK: rendered 7 mobile/tablet screenshots')
+          assert len(shots) == 3, f'expected 3 screenshots, got {len(shots)}'
+          by_name={p.name:p.stat().st_size for p in shots}
+          assert by_name['mobile-360-hero.png'] > 10000
+          assert by_name['mobile-390-full.png'] > 250000, by_name
+          assert by_name['tablet-768-full.png'] > 250000, by_name
+          print('OK: rendered hero plus full mobile/tablet pages', by_name)
           PY
 
       - name: Upload audit screenshots
@@ -160,4 +157,4 @@ jobs:
           name: mobile-audit-screenshots
           path: audit-shots/*.png
           if-no-files-found: warn
-          retention-days: 3
+          retention-days: 1
