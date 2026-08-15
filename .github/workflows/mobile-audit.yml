@@ -48,7 +48,8 @@ jobs:
           broken=[h for h in p.hrefs if h.startswith('#') and h != '#' and h[1:] not in ids]
           assert not broken, f'broken local anchors: {broken}'
           assert 'https://t.me/zayra61' in p.hrefs, 'Telegram CTA is missing'
-          assert "mobileStylesheet.href = 'mobile.css?v=20260815-1'" in js, 'mobile stylesheet loader missing'
+          assert 'href="mobile.css?v=20260815-2"' in html, 'mobile stylesheet must be linked in document head'
+          assert "mobileStylesheet.href" not in js, 'mobile stylesheet must not be injected after layout'
 
           assets=re.findall(r'src="(assets/cases/[^"]+)"', js)
           missing=[a for a in assets if not (root/a).exists()]
