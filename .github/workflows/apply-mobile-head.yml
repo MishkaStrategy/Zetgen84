@@ -1,0 +1,54 @@
+name: Apply mobile CSS in document head
+
+on:
+  push:
+    branches: [mobile-rebuild-audit]
+    paths:
+      - '.github/workflows/apply-mobile-head.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mobile-rebuild-audit
+      - name: Move mobile stylesheet into document head
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          index = Path('final/index.html')
+          html = index.read_text(encoding='utf-8')
+          old = '  <link rel="stylesheet" href="styles.css">'
+          new = old + '\n  <link rel="stylesheet" href="mobile.css?v=20260815-2">'
+          if 'mobile.css?v=20260815-2' not in html:
+              assert old in html
+              html = html.replace(old, new, 1)
+              index.write_text(html, encoding='utf-8')
+
+          app = Path('final/app.js')
+          js = app.read_text(encoding='utf-8')
+          block = '''\n  // Keep desktop V4 untouched; load the rebuilt mobile layer last so it can fully\n  // replace the old narrow-screen rules without rewriting the desktop stylesheet.\n  const mobileStylesheet = document.createElement('link');\n  mobileStylesheet.rel = 'stylesheet';\n  mobileStylesheet.href = 'mobile.css?v=20260815-1';\n  document.head.appendChild(mobileStylesheet);\n'''
+          assert block in js, 'dynamic mobile stylesheet block not found'
+          js = js.replace(block, '\n', 1)
+          app.write_text(js, encoding='utf-8')
+
+          audit = Path('.github/workflows/mobile-audit.yml')
+          text = audit.read_text(encoding='utf-8')
+          old_assert = '''          assert "mobileStylesheet.href = 'mobile.css?v=20260815-1'" in js, 'mobile stylesheet loader missing'\n'''
+          new_assert = '''          assert 'href="mobile.css?v=20260815-2"' in html, 'mobile stylesheet must be linked in document head'\n          assert "mobileStylesheet.href" not in js, 'mobile stylesheet must not be injected after layout'\n'''
+          assert old_assert in text, 'old audit assertion not found'
+          text = text.replace(old_assert, new_assert, 1)
+          audit.write_text(text, encoding='utf-8')
+          PY
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add final/index.html final/app.js .github/workflows/mobile-audit.yml
+          git commit -m 'Load rebuilt mobile CSS before first layout'
+          git push origin mobile-rebuild-audit
