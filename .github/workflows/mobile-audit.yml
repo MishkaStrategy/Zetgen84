@@ -25,7 +25,7 @@ jobs:
           python - <<'PY'
           from html.parser import HTMLParser
           from pathlib import Path
-          import re, sys
+          import re
 
           root = Path('final')
           html = (root / 'index.html').read_text(encoding='utf-8')
@@ -50,9 +50,9 @@ jobs:
           assert 'https://t.me/zayra61' in p.hrefs, 'Telegram CTA is missing'
           assert "mobileStylesheet.href = 'mobile.css?v=20260815-1'" in js, 'mobile stylesheet loader missing'
 
-          assets=re.findall(r'src=\\"(assets/cases/[^\\"]+)\\"', js)
+          assets=re.findall(r'src="(assets/cases/[^"]+)"', js)
           missing=[a for a in assets if not (root/a).exists()]
-          assert assets, 'no case assets referenced'
+          assert len(assets) == 10, f'expected 10 original case asset references, got {len(assets)}'
           assert not missing, f'missing case assets: {missing}'
 
           assert css.count('{') == css.count('}'), 'unbalanced CSS braces'
@@ -61,7 +61,7 @@ jobs:
           assert '@media (max-width: 360px)' in css, 'small-phone breakpoint missing'
           assert 'overflow-x: clip' in css, 'horizontal overflow guard missing'
           assert '.case-poster.case-original' in css, 'original case poster mobile rule missing'
-          print(f'OK: {len(ids)} ids, {len(p.hrefs)} links, {len(assets)} case asset references')
+          print(f'OK: {len(ids)} ids, {len(p.hrefs)} links, {len(assets)} original case asset references')
           PY
 
       - name: Mobile layout contract audit
@@ -87,13 +87,14 @@ jobs:
               if needle not in css: missing.append(f'{section}: {needle}')
           assert not missing, 'missing mobile layout contracts: ' + '; '.join(missing)
 
-          # Key interactive controls must remain touch-friendly.
           values=[int(x) for x in re.findall(r'min-height:\s*(\d+)px', css)]
           assert any(v >= 46 for v in values), 'touch target sizing not found'
           assert '.button { min-height: 46px' in css, 'base mobile button target must be >=46px'
           assert '.button-white { margin-top: 32px; min-width: 0; min-height: 52px' in css
           assert '.button-outline { min-height: 50px' in css
-          print('OK: all 8 sections have explicit mobile layout contracts')
+          assert '-webkit-line-clamp: initial' in css, 'case copy must not be truncated on mobile'
+          assert 'grid-template-columns: minmax(0, 1fr);' in css, 'single-column mobile benefit grid missing'
+          print('OK: all 8 sections have explicit mobile layout contracts and readable content')
           PY
 
       - name: Desktop isolation audit
@@ -103,9 +104,59 @@ jobs:
           from pathlib import Path
           css=Path('final/mobile.css').read_text(encoding='utf-8')
           first=css.find('@media (max-width: 820px)')
+          assert first >= 0
           pre=css[:first]
-          # Only charset/comment are allowed before the first mobile media query.
           stripped='\n'.join(line for line in pre.splitlines() if not line.strip().startswith('/*') and not line.strip().startswith('*') and line.strip())
           assert stripped.strip() in {'@charset "UTF-8";', ''}, 'mobile.css contains desktop-global styling'
           print('OK: desktop V4 is isolated from mobile override layer')
           PY
+
+      - name: Render smoke audit at mobile widths
+        shell: bash
+        run: |
+          set -euo pipefail
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$BROWSER" || { echo 'No Chromium browser on runner'; exit 1; }
+          mkdir -p audit-shots
+          python3 -m http.server 4173 --directory . >/tmp/mobile-audit-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          sleep 1
+
+          render() {
+            local width="$1"
+            local height="$2"
+            local anchor="$3"
+            local name="$4"
+            "$BROWSER" --headless --disable-gpu --no-sandbox --hide-scrollbars \
+              --virtual-time-budget=1800 --window-size="${width},${height}" \
+              --screenshot="audit-shots/${name}.png" \
+              "http://127.0.0.1:4173/final/${anchor}" >/tmp/chrome-${name}.log 2>&1
+            test -s "audit-shots/${name}.png"
+          }
+
+          render 360 800 '' mobile-360-hero
+          render 390 844 '#cases' mobile-390-cases
+          render 390 844 '#diagnosis' mobile-390-diagnosis
+          render 390 844 '#benefits' mobile-390-benefits
+          render 390 844 '#formats' mobile-390-formats
+          render 390 844 '#final' mobile-390-final
+          render 768 1024 '#cases' tablet-768-cases
+
+          python - <<'PY'
+          from pathlib import Path
+          shots=list(Path('audit-shots').glob('*.png'))
+          assert len(shots) == 7, f'expected 7 screenshots, got {len(shots)}'
+          tiny=[p for p in shots if p.stat().st_size < 10000]
+          assert not tiny, f'suspiciously small screenshots: {tiny}'
+          print('OK: rendered 7 mobile/tablet screenshots')
+          PY
+
+      - name: Upload audit screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-audit-screenshots
+          path: audit-shots/*.png
+          if-no-files-found: warn
+          retention-days: 3
