@@ -42,12 +42,6 @@
   `;
   document.head.appendChild(caseStyle);
 
-  // Keep desktop V4 untouched; load the rebuilt mobile layer last so it can fully
-  // replace the old narrow-screen rules without rewriting the desktop stylesheet.
-  const mobileStylesheet = document.createElement('link');
-  mobileStylesheet.rel = 'stylesheet';
-  mobileStylesheet.href = 'mobile.css?v=20260815-1';
-  document.head.appendChild(mobileStylesheet);
 
   const posterMarkup = {
     'poster-san': `
