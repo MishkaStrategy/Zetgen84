@@ -1,0 +1,111 @@
+name: Mobile pre-publish audit
+
+on:
+  push:
+    branches: [mobile-rebuild-audit]
+    paths:
+      - 'final/**'
+      - '.github/workflows/mobile-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: JavaScript syntax audit
+        run: node --check final/app.js
+
+      - name: HTML, CTA and asset integrity audit
+        shell: bash
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re, sys
+
+          root = Path('final')
+          html = (root / 'index.html').read_text(encoding='utf-8')
+          js = (root / 'app.js').read_text(encoding='utf-8')
+          css = (root / 'mobile.css').read_text(encoding='utf-8')
+
+          class AuditParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.ids=[]; self.hrefs=[]
+              def handle_starttag(self, tag, attrs):
+                  d=dict(attrs)
+                  if 'id' in d: self.ids.append(d['id'])
+                  if tag == 'a' and 'href' in d: self.hrefs.append(d['href'])
+
+          p=AuditParser(); p.feed(html)
+          dup={x for x in p.ids if p.ids.count(x)>1}
+          assert not dup, f'duplicate ids: {sorted(dup)}'
+          ids=set(p.ids)
+          broken=[h for h in p.hrefs if h.startswith('#') and h != '#' and h[1:] not in ids]
+          assert not broken, f'broken local anchors: {broken}'
+          assert 'https://t.me/zayra61' in p.hrefs, 'Telegram CTA is missing'
+          assert "mobileStylesheet.href = 'mobile.css?v=20260815-1'" in js, 'mobile stylesheet loader missing'
+
+          assets=re.findall(r'src=\\"(assets/cases/[^\\"]+)\\"', js)
+          missing=[a for a in assets if not (root/a).exists()]
+          assert assets, 'no case assets referenced'
+          assert not missing, f'missing case assets: {missing}'
+
+          assert css.count('{') == css.count('}'), 'unbalanced CSS braces'
+          assert '@media (max-width: 820px)' in css, 'main mobile breakpoint missing'
+          assert '@media (max-width: 480px)' in css, 'phone breakpoint missing'
+          assert '@media (max-width: 360px)' in css, 'small-phone breakpoint missing'
+          assert 'overflow-x: clip' in css, 'horizontal overflow guard missing'
+          assert '.case-poster.case-original' in css, 'original case poster mobile rule missing'
+          print(f'OK: {len(ids)} ids, {len(p.hrefs)} links, {len(assets)} case asset references')
+          PY
+
+      - name: Mobile layout contract audit
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          css=Path('final/mobile.css').read_text(encoding='utf-8')
+          required={
+            'hero': ['.hero {', '.hero-copy {', '.hero-product {'],
+            'about': ['.about-intro {', '.metrics {', '.metric {'],
+            'cases': ['.case-rail {', '.case-card {', '.case-copy {', '.case-poster.case-original'],
+            'diagnosis': ['.diagnosis-grid {', '.audit {', '.diagnosis-outcome {'],
+            'scope': ['.scope-row {', 'grid-template-areas: "no title mark" ". desc desc"'],
+            'benefits': ['.bento {', '.benefit-large {'],
+            'formats': ['.format-grid {', '.format-card {'],
+            'final': ['.final {', '.final-copy {', '.final-object {', '.footer {'],
+          }
+          missing=[]
+          for section, needles in required.items():
+            for needle in needles:
+              if needle not in css: missing.append(f'{section}: {needle}')
+          assert not missing, 'missing mobile layout contracts: ' + '; '.join(missing)
+
+          # Key interactive controls must remain touch-friendly.
+          values=[int(x) for x in re.findall(r'min-height:\s*(\d+)px', css)]
+          assert any(v >= 46 for v in values), 'touch target sizing not found'
+          assert '.button { min-height: 46px' in css, 'base mobile button target must be >=46px'
+          assert '.button-white { margin-top: 32px; min-width: 0; min-height: 52px' in css
+          assert '.button-outline { min-height: 50px' in css
+          print('OK: all 8 sections have explicit mobile layout contracts')
+          PY
+
+      - name: Desktop isolation audit
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          css=Path('final/mobile.css').read_text(encoding='utf-8')
+          first=css.find('@media (max-width: 820px)')
+          pre=css[:first]
+          # Only charset/comment are allowed before the first mobile media query.
+          stripped='\n'.join(line for line in pre.splitlines() if not line.strip().startswith('/*') and not line.strip().startswith('*') and line.strip())
+          assert stripped.strip() in {'@charset "UTF-8";', ''}, 'mobile.css contains desktop-global styling'
+          print('OK: desktop V4 is isolated from mobile override layer')
+          PY
