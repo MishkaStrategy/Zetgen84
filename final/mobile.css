@@ -459,3 +459,15 @@
   .format-card { padding-left: 20px; padding-right: 20px; }
   .final-copy h2 { font-size: 76px; }
 }
+
+
+/* Exact Figma assets, responsive without extra Hero bottom gap. */
+@media (max-width: 820px) {
+  .hero { height:auto; min-height:0; grid-template-columns:1fr; margin-bottom:0; }
+  .hero-copy { height:auto; min-height:0; padding-bottom:0; }
+  .hero-title span + span { margin-top:.15em; }
+  .hero-product-figma { height:clamp(360px, 103.6vw, 500px); min-height:0; }
+  .hero-product-figma .hero-product-exact { object-fit:fill; }
+  .orbit-a { top:auto; }
+  .poster-san.case-original .case-exact-export { object-fit:cover; }
+}
