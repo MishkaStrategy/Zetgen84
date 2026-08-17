@@ -256,3 +256,38 @@ em{font-style:normal;color:var(--green)}
 @media (max-width:430px){
   .hero-product{min-height:390px}.case-card{flex-basis:91vw}.case-rail{height:560px}.case-card{height:540px;grid-template-rows:58% 42%}.metrics{grid-template-columns:repeat(2,1fr)}.metric{height:170px}.metric strong{font-size:58px}.bento{grid-template-columns:1fr 1fr}.benefit{min-height:160px;padding:17px}.benefit h3{font-size:22px}.benefit-large{min-height:235px}.benefit-large h3{font-size:42px}
 }
+
+
+/* Exact Figma sync: Hero 6:19 + San Valero 15:277 */
+.hero{
+  height:834px;
+  min-height:834px;
+  margin-bottom:0;
+  grid-template-columns:635px 805px;
+}
+.hero-copy{
+  height:834px;
+  min-height:834px;
+}
+.hero-title span+span{margin-top:10px}
+.hero-product-figma{
+  height:834px;
+  min-height:834px;
+  background:#dde1d2;
+}
+.hero-product-figma::before,.hero-product-figma::after{display:none}
+.hero-product-figma .hero-product-exact{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:none;
+  object-fit:fill;
+  transform:none;
+  filter:none;
+}
+.orbit-a{top:150px}
+.about{margin-top:0}
+.case-card:first-child .case-copy>p{font-size:16px;line-height:1.45}

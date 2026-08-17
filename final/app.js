@@ -8,6 +8,7 @@
   const caseStyle = document.createElement('style');
   caseStyle.textContent = `
     .case-poster.case-original{position:relative;overflow:hidden;container-type:inline-size}
+    .poster-san.case-original .case-exact-export{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:fill;pointer-events:none;user-select:none;-webkit-user-drag:none}
     .case-original-canvas{position:absolute;left:0;top:50%;width:100cqw;height:100.662252cqw;transform:translateY(-50%);overflow:hidden}
     .case-original-canvas .case-asset{position:absolute;display:block;max-width:none;pointer-events:none;user-select:none;-webkit-user-drag:none}
     .case-original-grid{position:absolute;inset:0;pointer-events:none;background-size:16.6666667% 100%,100% 20%}
@@ -45,14 +46,7 @@
 
   const posterMarkup = {
     'poster-san': `
-      <div class="case-original-canvas">
-        <div class="case-original-grid"></div>
-        <span class="case-original-code">SV / 01</span>
-        <span class="case-original-side">BRAND<br>SYSTEM</span>
-        <div class="san-a-wrap"><img class="case-asset san-a" src="assets/cases/san-macbook-15.png" alt="" decoding="async"></div>
-        <img class="case-asset san-b" src="assets/cases/san-macbook-m2.png" alt="" decoding="async">
-        <img class="case-asset san-screen" src="assets/cases/san-screen.png" alt="" decoding="async">
-      </div>`,
+      <img class="case-exact-export" src="assets/figma-exact/san-valero-poster.png" alt="" width="755" height="760" decoding="async">`,
     'poster-sofia': `
       <div class="case-original-canvas">
         <div class="case-original-grid"></div>
