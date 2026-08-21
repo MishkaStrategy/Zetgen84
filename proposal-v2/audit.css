@@ -1,0 +1,290 @@
+/* Audit fixes layered over the primary visual system. */
+
+body {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+[id] {
+  scroll-margin-top: 92px;
+}
+
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 4px;
+}
+
+.cases a:focus-visible,
+.final-cta a:focus-visible,
+.developer-credit a:focus-visible {
+  outline-color: var(--fresh);
+}
+
+.before-after,
+.sales-mark {
+  position: relative;
+}
+
+.format-card[hidden] {
+  display: none !important;
+}
+
+.reviews-rail[data-dragging="true"] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.review-frame,
+.product-shot,
+.final-product img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/*
+  Product imagery: one photo per scene, treated as an intentional editorial card.
+  The source photo has a white background, so we no longer fake a transparent cutout.
+*/
+.product-world::after,
+.final-product::after {
+  content: none !important;
+  display: none !important;
+}
+
+.product-shot {
+  z-index: 4;
+  left: 22%;
+  top: 11%;
+  width: 60%;
+  height: 71%;
+  padding: clamp(12px, 1.15vw, 20px);
+  object-fit: contain;
+  opacity: 1;
+  image-rendering: auto;
+  background: rgba(255, 255, 252, .97);
+  border: 1px solid rgba(255, 255, 255, .9);
+  border-radius: clamp(26px, 3vw, 44px);
+  box-shadow:
+    0 34px 90px rgba(8, 58, 38, .17),
+    inset 0 1px 0 rgba(255, 255, 255, .9);
+  mix-blend-mode: normal;
+  filter: none;
+  transform: rotate(-4deg) translateZ(60px);
+  mask-image: none;
+  -webkit-mask-image: none;
+  clip-path: none;
+}
+
+.product-label {
+  right: 1%;
+  bottom: 3%;
+}
+
+/* Final CTA: explicit two-column composition instead of product behind the copy. */
+.final-copy {
+  max-width: 100%;
+}
+
+.final-copy > p,
+.final-actions,
+.contact-hook {
+  margin-left: 0;
+  width: min(560px, 43vw);
+}
+
+.final-product {
+  z-index: 3;
+  right: 4.5vw;
+  top: 20%;
+  width: min(34vw, 520px);
+  height: min(62vh, 610px);
+  opacity: 1;
+  pointer-events: none;
+}
+
+.final-product::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 10% -12% -8% -12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 231, 141, .18), rgba(168, 231, 141, 0) 68%);
+  filter: blur(24px);
+}
+
+.final-product img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: clamp(14px, 1.5vw, 24px);
+  object-fit: contain;
+  opacity: 1;
+  image-rendering: auto;
+  background: rgba(250, 250, 245, .98);
+  border: 1px solid rgba(255, 255, 255, .25);
+  border-radius: clamp(30px, 3.4vw, 50px);
+  box-shadow:
+    0 42px 110px rgba(0, 0, 0, .28),
+    inset 0 1px 0 rgba(255, 255, 255, .9);
+  mix-blend-mode: normal;
+  filter: none;
+  transform: rotate(4deg);
+  mask-image: none;
+  -webkit-mask-image: none;
+  clip-path: none;
+}
+
+.final-orbit {
+  left: -12%;
+  top: 7%;
+  width: 116%;
+  height: 84%;
+  border-width: 22px;
+  opacity: .6;
+}
+
+@supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  .site-header,
+  .glass-card,
+  .product-label {
+    background: rgba(244, 247, 239, .94);
+  }
+
+  .diagnosis-panel--friction {
+    background: #0b3526;
+  }
+}
+
+@media (max-width: 900px) {
+  .product-shot {
+    left: 24%;
+    top: 12%;
+    width: 58%;
+    height: 68%;
+  }
+
+  .final-copy > p,
+  .final-actions,
+  .contact-hook {
+    width: 48%;
+  }
+
+  .final-product {
+    right: 2vw;
+    top: 27%;
+    width: min(39vw, 430px);
+    height: min(54vh, 500px);
+  }
+}
+
+@media (max-width: 640px) {
+  .compare-arrow {
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .case-link {
+    overflow-wrap: anywhere;
+  }
+
+  .format-options li {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .contact-hook {
+    line-height: 1.35;
+  }
+
+  .product-shot {
+    left: 21%;
+    top: 13%;
+    width: 62%;
+    height: 65%;
+    padding: 10px;
+    border-radius: 26px;
+    transform: rotate(-3deg) translateZ(60px);
+  }
+
+  .product-label {
+    right: 8%;
+    bottom: 1%;
+  }
+
+  .final-cta {
+    min-height: 1040px;
+    padding-bottom: 420px;
+  }
+
+  .final-copy > p,
+  .final-actions,
+  .contact-hook {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .final-product {
+    left: 11%;
+    right: 11%;
+    top: auto;
+    bottom: 48px;
+    width: auto;
+    height: 330px;
+    opacity: 1;
+  }
+
+  .final-product img {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    border-radius: 30px;
+    transform: rotate(2deg);
+  }
+
+  .final-orbit {
+    left: -5%;
+    top: 8%;
+    width: 110%;
+    height: 84%;
+    border-width: 14px;
+  }
+}
+
+@media (max-width: 390px) {
+  .hero-bottom {
+    align-items: end;
+  }
+
+  .hero-bottom span {
+    max-width: 46%;
+  }
+
+  .format-tab {
+    min-width: 0;
+    line-height: 1.15;
+  }
+
+  .final-cta {
+    min-height: 1010px;
+    padding-bottom: 390px;
+  }
+
+  .final-product {
+    left: 9%;
+    right: 9%;
+    bottom: 42px;
+    height: 305px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reviews-rail {
+    scroll-snap-type: none;
+  }
+}
